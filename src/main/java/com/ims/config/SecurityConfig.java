@@ -34,21 +34,6 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
-    @Bean
-    CommandLineRunner test(SysAdminRepository repo) {
-        return args -> {
-            SysAdmin admin = new SysAdmin();
-            admin.setUsername("24RP09739");
-            admin.setPassword("24rp06926");
-            admin.setFullName("NDIKUMANA DERIC");
-            admin.setRole("SYSADMIN");
-            admin.setEnabled(true);
-
-            repo.save(admin);
-            System.out.println("Inserted!");
-        };
-    }
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
