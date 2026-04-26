@@ -1,11 +1,27 @@
-# Use Java 17 (recommended for Spring Boot)
-FROM eclipse-temurin:17-jdk-alpine
+# --- Build stage ---
+FROM eclipse-temurin:21-jdk-alpine AS build
+
+WORKDIR /app
+
+# Copy Maven wrapper and pom.xml first for dependency caching
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
+
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -q
+
+# Copy source and build the jar
+COPY src/ src/
+
+RUN ./mvnw package -DskipTests -q
+
+# --- Runtime stage ---
+FROM eclipse-temurin:21-jre-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy jar file
-COPY target/*.jar app.jar
+# Copy jar file from build stage
+COPY --from=build /app/target/*.jar app.jar
 
 # Expose port
 EXPOSE 8080
