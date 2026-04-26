@@ -1,7 +1,10 @@
 package com.ims.config;
 
+import com.ims.model.SysAdmin;
+import com.ims.repository.SysAdminRepository;
 import com.ims.service.SysAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,6 +35,21 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    @Bean
+    CommandLineRunner test(SysAdminRepository repo) {
+        return args -> {
+            SysAdmin admin = new SysAdmin();
+            admin.setUsername("24RP09739");
+            admin.setPassword("24rp06926");
+            admin.setFullName("NDIKUMANA DERIC");
+            admin.setRole("SYSADMIN");
+            admin.setEnabled(true);
+
+            repo.save(admin);
+            System.out.println("Inserted!");
+        };
+    }
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
