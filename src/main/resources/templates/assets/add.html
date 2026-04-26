@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Register Asset</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2>➕ Register New Asset</h2>
+            <a th:href="@{/assets}" class="btn btn-outline">← Back to List</a>
+        </div>
+
+        <div class="card form-card">
+            <form th:action="@{/assets/add}" method="post" th:object="${asset}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Asset Tag *</label>
+                        <input type="text" th:field="*{assetTag}" placeholder="e.g., AIR-LT-001" required>
+                        <span class="error" th:errors="*{assetTag}"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Device Type *</label>
+                        <select th:field="*{deviceType}" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="LAPTOP">💻 Laptop</option>
+                            <option value="DESKTOP">🖥️ Desktop</option>
+                            <option value="MOBILE">📱 Mobile Phone</option>
+                        </select>
+                        <span class="error" th:errors="*{deviceType}"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Brand *</label>
+                        <input type="text" th:field="*{brand}" placeholder="e.g., Dell, HP, Samsung" required>
+                        <span class="error" th:errors="*{brand}"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Model *</label>
+                        <input type="text" th:field="*{model}" placeholder="e.g., Latitude 5420" required>
+                        <span class="error" th:errors="*{model}"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Serial Number</label>
+                        <input type="text" th:field="*{serialNumber}" placeholder="Serial number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Processor</label>
+                        <input type="text" th:field="*{processor}" placeholder="e.g., Intel Core i5-1135G7">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>RAM</label>
+                        <input type="text" th:field="*{ram}" placeholder="e.g., 16GB">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Storage</label>
+                        <input type="text" th:field="*{storage}" placeholder="e.g., 512GB SSD">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Operating System</label>
+                        <input type="text" th:field="*{operatingSystem}" placeholder="e.g., Windows 11 Pro">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Condition *</label>
+                        <select th:field="*{condition}" required>
+                            <option value="">-- Select Condition --</option>
+                            <option value="NEW">✨ New</option>
+                            <option value="GOOD">👍 Good</option>
+                            <option value="FAIR">👌 Fair</option>
+                            <option value="POOR">⚠️ Poor</option>
+                            <option value="DAMAGED">💔 Damaged</option>
+                        </select>
+                        <span class="error" th:errors="*{condition}"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Status *</label>
+                        <select th:field="*{status}" required>
+                            <option value="AVAILABLE">✅ Available</option>
+                            <option value="UNDER_REPAIR">🔧 Under Repair</option>
+                            <option value="DECOMMISSIONED">📦 Decommissioned</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" th:field="*{department}" placeholder="e.g., IT, Finance, Sales">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" th:field="*{location}" placeholder="e.g., Kigali Office">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Purchase Date</label>
+                        <input type="date" th:field="*{purchaseDate}">
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Notes</label>
+                    <textarea th:field="*{notes}" placeholder="Any additional notes about this asset..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">✅ Register Asset</button>
+                    <a th:href="@{/assets}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

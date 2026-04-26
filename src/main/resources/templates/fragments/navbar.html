@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <nav th:fragment="navbar" class="navbar">
+        <div class="nav-brand">
+            <a th:href="@{/dashboard}">📦 IMS</a>
+        </div>
+        <div class="nav-links">
+            <a th:href="@{/dashboard}">🏠 Dashboard</a>
+            <a th:href="@{/assets}">💻 Assets</a>
+            <a th:href="@{/assignments}">📋 Assignments</a>
+            <a th:href="@{/reports}">📊 Reports</a>
+        </div>
+        <div class="nav-user">
+            <span>👤 <sec:authentication property="name"/></span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn-logout">🚪 Logout</button>
+            </form>
+        </div>
+    </nav>
+</body>
+</html>

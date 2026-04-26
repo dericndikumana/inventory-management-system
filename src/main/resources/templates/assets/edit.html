@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Edit Asset</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2>✏️ Edit Asset</h2>
+            <a th:href="@{/assets}" class="btn btn-outline">← Back to List</a>
+        </div>
+
+        <div class="card form-card">
+            <form th:action="@{/assets/edit/{id}(id=${asset.id})}" method="post" th:object="${asset}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Asset Tag *</label>
+                        <input type="text" th:field="*{assetTag}" required>
+                        <span class="error" th:errors="*{assetTag}"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Device Type *</label>
+                        <select th:field="*{deviceType}" required>
+                            <option value="LAPTOP">💻 Laptop</option>
+                            <option value="DESKTOP">🖥️ Desktop</option>
+                            <option value="MOBILE">📱 Mobile Phone</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Brand *</label>
+                        <input type="text" th:field="*{brand}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Model *</label>
+                        <input type="text" th:field="*{model}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Serial Number</label>
+                        <input type="text" th:field="*{serialNumber}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Processor</label>
+                        <input type="text" th:field="*{processor}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>RAM</label>
+                        <input type="text" th:field="*{ram}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Storage</label>
+                        <input type="text" th:field="*{storage}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Operating System</label>
+                        <input type="text" th:field="*{operatingSystem}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Condition *</label>
+                        <select th:field="*{condition}" required>
+                            <option value="NEW">✨ New</option>
+                            <option value="GOOD">👍 Good</option>
+                            <option value="FAIR">👌 Fair</option>
+                            <option value="POOR">⚠️ Poor</option>
+                            <option value="DAMAGED">💔 Damaged</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Status *</label>
+                        <select th:field="*{status}" required>
+                            <option value="AVAILABLE">✅ Available</option>
+                            <option value="ASSIGNED">👤 Assigned</option>
+                            <option value="UNDER_REPAIR">🔧 Under Repair</option>
+                            <option value="DECOMMISSIONED">📦 Decommissioned</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" th:field="*{department}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" th:field="*{location}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Purchase Date</label>
+                        <input type="date" th:field="*{purchaseDate}">
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Notes</label>
+                    <textarea th:field="*{notes}" placeholder="Any additional notes..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                    <a th:href="@{/assets}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

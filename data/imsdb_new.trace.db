@@ -1,0 +1,3 @@
+2026-04-25 23:25:21.315069+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ASSIGNMENTS" not found (this database is empty); SQL statement:
+DELETE FROM assignments [42104-224]

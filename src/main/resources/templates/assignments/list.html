@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Assignments</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2>📋 Assignment Records</h2>
+            <a th:href="@{/assignments/issue}" class="btn btn-primary">+ Issue New Asset</a>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <div class="card">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Asset Tag</th>
+                            <th>Assigned To</th>
+                            <th>Department</th>
+                            <th>Issued Date</th>
+                            <th>Expected Return</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a : ${assignments}">
+                            <td><strong th:text="${a.asset.assetTag}"></strong></td>
+                            <td>
+                                <div th:text="${a.assignedTo}"></div>
+                                <small th:text="${a.employeeId}" class="text-muted"></small>
+                            </td>
+                            <td th:text="${a.department}"></td>
+                            <td th:text="${a.issuedDate}"></td>
+                            <td th:text="${a.expectedReturnDate ?: '—'}"></td>
+                            <td>
+                                <span th:text="${a.status}"
+                                      th:classappend="${a.status == 'ACTIVE'} ? 'badge badge-active' : 'badge badge-returned'">
+                                </span>
+                            </td>
+                            <td class="actions">
+                                <a th:if="${a.status == 'ACTIVE'}"
+                                   th:href="@{/assignments/return/{id}(id=${a.id})}"
+                                   class="btn btn-sm btn-warning">📥 Return</a>
+                                <span th:unless="${a.status == 'ACTIVE'}" class="text-muted">✓ Returned</span>
+                            </td>
+                        </table>
+                        <tr th:if="${#lists.isEmpty(assignments)}">
+                            <td colspan="7" class="text-center">📭 No assignments found. Click "Issue New Asset" to create one.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

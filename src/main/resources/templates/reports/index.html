@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Reports</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2>📊 Reports & Analytics</h2>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <h3 th:text="${totalAssets}">0</h3>
+                    <p>Total Assets</p>
+                </div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 th:text="${availableAssets}">0</h3>
+                    <p>Available</p>
+                </div>
+            </div>
+            <div class="stat-card orange">
+                <div class="stat-icon">👤</div>
+                <div class="stat-info">
+                    <h3 th:text="${assignedAssets}">0</h3>
+                    <p>Assigned</p>
+                </div>
+            </div>
+            <div class="stat-card red">
+                <div class="stat-icon">🔧</div>
+                <div class="stat-info">
+                    <h3 th:text="${underRepair}">0</h3>
+                    <p>Under Repair</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Breakdown -->
+        <div class="stats-grid">
+            <div class="stat-card purple">
+                <div class="stat-icon">🖥️</div>
+                <div class="stat-info">
+                    <h3 th:text="${totalLaptops}">0</h3>
+                    <p>Total Laptops</p>
+                </div>
+            </div>
+            <div class="stat-card teal">
+                <div class="stat-icon">🖱️</div>
+                <div class="stat-info">
+                    <h3 th:text="${totalDesktops}">0</h3>
+                    <p>Total Desktops</p>
+                </div>
+            </div>
+            <div class="stat-card pink">
+                <div class="stat-icon">📱</div>
+                <div class="stat-info">
+                    <h3 th:text="${totalMobiles}">0</h3>
+                    <p>Total Mobile Phones</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asset Report Table -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📋 Complete Asset Register</h3>
+            </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Asset Tag</th>
+                            <th>Type</th>
+                            <th>Brand/Model</th>
+                            <th>Serial No.</th>
+                            <th>Condition</th>
+                            <th>Status</th>
+                            <th>Department</th>
+                            <th>Date Added</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a : ${allAssets}">
+                            <td><strong th:text="${a.assetTag}"></strong></td>
+                            <td th:text="${a.deviceType}"></td>
+                            <td th:text="${a.brand + ' ' + a.model}"></td>
+                            <td th:text="${a.serialNumber}"></td>
+                            <td th:text="${a.condition}"></td>
+                            <td th:text="${a.status}"></td>
+                            <td th:text="${a.department}"></td>
+                            <td th:text="${a.createdAt}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(allAssets)}">
+                            <td colspan="8" class="text-center">No assets found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Assignment History -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📜 Complete Assignment History</h3>
+            </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Assigned To</th>
+                            <th>Department</th>
+                            <th>Issued Date</th>
+                            <th>Returned Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a : ${allAssignments}">
+                            <td th:text="${a.asset.assetTag}"></td>
+                            <td th:text="${a.assignedTo}"></td>
+                            <td th:text="${a.department}"></td>
+                            <td th:text="${a.issuedDate}"></td>
+                            <td th:text="${a.returnedDate ?: '—'}"></td>
+                            <td>
+                                <span th:text="${a.status}"
+                                      th:classappend="${a.status == 'ACTIVE'} ? 'badge badge-active' : 'badge badge-returned'">
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(allAssignments)}">
+                            <td colspan="6" class="text-center">No assignments found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

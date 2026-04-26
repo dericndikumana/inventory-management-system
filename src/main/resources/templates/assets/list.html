@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Asset Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2>💻 Asset Registry</h2>
+            <a th:href="@{/assets/add}" class="btn btn-primary">+ Register New Asset</a>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <div class="filter-bar">
+            <form th:action="@{/assets}" method="get" class="search-form">
+                <input type="text" name="search" th:value="${search}" placeholder="🔍 Search by tag, brand, or model...">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <div class="filter-buttons">
+                <a th:href="@{/assets}" class="btn btn-outline btn-sm">All</a>
+                <a th:href="@{/assets(type='LAPTOP')}" class="btn btn-outline btn-sm">Laptops</a>
+                <a th:href="@{/assets(type='DESKTOP')}" class="btn btn-outline btn-sm">Desktops</a>
+                <a th:href="@{/assets(type='MOBILE')}" class="btn btn-outline btn-sm">Mobiles</a>
+                <a th:href="@{/assets(status='AVAILABLE')}" class="btn btn-outline btn-sm">Available</a>
+                <a th:href="@{/assets(status='ASSIGNED')}" class="btn btn-outline btn-sm">Assigned</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Asset Tag</th>
+                            <th>Type</th>
+                            <th>Brand / Model</th>
+                            <th>Serial No.</th>
+                            <th>Condition</th>
+                            <th>Status</th>
+                            <th>Department</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="asset : ${assets}">
+                            <td><strong th:text="${asset.assetTag}"></strong></td>
+                            <td>
+                                <span th:text="${asset.deviceType}" 
+                                      th:classappend="'badge badge-' + ${asset.deviceType.toLowerCase()}"></span>
+                            </td>
+                            <td th:text="${asset.brand + ' ' + asset.model}"></td>
+                            <td th:text="${asset.serialNumber}"></td>
+                            <td>
+                                <span th:text="${asset.condition}"
+                                      th:classappend="'badge badge-status-' + ${asset.condition.toLowerCase()}"></span>
+                            </td>
+                            <td>
+                                <span th:text="${asset.status}"
+                                      th:classappend="'badge badge-status-' + ${asset.status.toLowerCase().replace('_','-')}"></span>
+                            </td>
+                            <td th:text="${asset.department}"></td>
+                            <td class="actions">
+                                <a th:href="@{/assets/edit/{id}(id=${asset.id})}" class="btn btn-sm btn-info">✏️ Edit</a>
+                                <a th:href="@{/assets/delete/{id}(id=${asset.id})}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('⚠️ Are you sure you want to delete this asset?')">🗑️ Delete</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(assets)}">
+                            <td colspan="8" class="text-center">📭 No assets found. Click "Register New Asset" to add one.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

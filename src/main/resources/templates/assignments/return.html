@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Return Asset</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2>📥 Return Asset</h2>
+            <a th:href="@{/assignments}" class="btn btn-outline">← Back to List</a>
+        </div>
+
+        <div class="card form-card">
+            <div class="return-info">
+                <h3>📋 Assignment Details</h3>
+                <p><strong>Asset Tag:</strong> <span th:text="${assignment.asset.assetTag}"></span></p>
+                <p><strong>Device:</strong> <span th:text="${assignment.asset.brand + ' ' + assignment.asset.model}"></span></p>
+                <p><strong>Assigned To:</strong> <span th:text="${assignment.assignedTo}"></span></p>
+                <p><strong>Department:</strong> <span th:text="${assignment.department}"></span></p>
+                <p><strong>Issued Date:</strong> <span th:text="${assignment.issuedDate}"></span></p>
+                <p><strong>Condition at Issue:</strong> <span th:text="${assignment.conditionAtIssue}"></span></p>
+            </div>
+
+            <hr>
+
+            <form th:action="@{/assignments/return/{id}(id=${assignment.id})}" method="post">
+                <div class="form-group">
+                    <label>Condition at Return *</label>
+                    <select name="conditionAtReturn" required>
+                        <option value="">-- Select Condition --</option>
+                        <option value="GOOD">👍 Good</option>
+                        <option value="FAIR">👌 Fair</option>
+                        <option value="POOR">⚠️ Poor</option>
+                        <option value="DAMAGED">💔 Damaged</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Return Notes</label>
+                    <textarea name="returnNotes" placeholder="Any damage, missing parts, or additional comments..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">📥 Confirm Return</button>
+                    <a th:href="@{/assignments}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>👋 Welcome back, <span sec:authentication="principal.fullName">User</span>!</h1>
+            <p>Here's a summary of the asset inventory. <br>24RP09739---24RP06926</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Assets</h3>
+                <p th:text="${totalAssets}">0</p>
+                <a th:href="@{/assets}">View All</a>
+            </div>
+            <div class="stat-card">
+                <h3>Assets Available</h3>
+                <p th:text="${assetsAvailable}">0</p>
+                <a th:href="@{/assets(status='Available')}">View Available</a>
+            </div>
+            <div class="stat-card">
+                <h3>Assets Assigned</h3>
+                <p th:text="${assetsAssigned}">0</p>
+                <a th:href="@{/assets(status='Assigned')}">View Assigned</a>
+            </div>
+            <div class="stat-card">
+                <h3>Assets In Repair</h3>
+                <p th:text="${assetsInRepair}">0</p>
+                <a th:href="@{/assets(status='In Repair')}">View In Repair</a>
+            </div>
+        </div>
+
+        <!-- Recent Activity & Quick Actions -->
+        <div class="content-grid">
+            <!-- Recent Assignments -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Recent Assignments</h3>
+                    <a th:href="@{/assignments}" class="view-all-link">View All</a>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Asset Tag</th>
+                                <th>Assigned To</th>
+                                <th>Issue Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="a : ${recentAssignments}">
+                                <td><strong th:text="${a.asset.assetTag}"></strong></td>
+                                <td>
+                                    <div th:text="${a.assignedTo}"></div>
+                                    <small th:text="${a.employeeId}" class="text-muted"></small>
+                                </td>
+                                <td th:text="${#temporals.format(a.issuedDate, 'dd-MMM-yyyy')}"></td>
+                                <td class="actions">
+                                    <a th:href="@{/assignments/return/{id}(id=${a.id})}" class="btn btn-sm btn-warning">📥 Return</a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(recentAssignments)}">
+                                <td colspan="4" class="text-center">📭 No recent assignments.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Quick Actions</h3>
+                </div>
+                <div class="quick-actions">
+                    <a th:href="@{/assets/add}" class="action-item">
+                        <span class="icon">➕</span>
+                        <span>Add New Asset</span>
+                    </a>
+                    <a th:href="@{/assignments/issue}" class="action-item">
+                        <span class="icon">📤</span>
+                        <span>Issue an Asset</span>
+                    </a>
+                    <a th:href="@{/reports}" class="action-item">
+                        <span class="icon">📊</span>
+                        <span>Generate Reports</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <p class="login-footer">© 2026 Airtel IMS | Secure System Access Developed by Deric NDIKUMANA and BAMURANGE Sarah</p>
+    </div>
+</body>
+</html>
